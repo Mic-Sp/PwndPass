@@ -17,7 +17,9 @@ passwordForm.addEventListener("submit", async (event) => {
 
   const prefix = hashHex.slice(0, 5);
   const suffix = hashHex.slice(5);
-
-  console.log("SHA-1 prefix:", prefix);
-  console.log("SHA-1 suffix:", suffix);
+  
+  // Send only the five-character prefix to the range endpoint.
+  const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+  // Log the response body unchanged without parsing its lines.
+  console.log(await response.text());
 });
