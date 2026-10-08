@@ -8,13 +8,38 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <main>
-      <form id="password-form">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required autocomplete="off">
-        <button type="submit">Check password</button>
-      </form>
-      <p id="result" aria-live="polite"></p>
+    <main class="app-shell">
+      <section class="terminal-card" aria-labelledby="app-title">
+        <header class="terminal-card__header">
+          <div>
+            <p class="terminal-card__eyebrow">SECURITY TOOL / 01</p>
+            <h1 id="app-title">PwndPass</h1>
+          </div>
+          <p class="terminal-card__status"><span aria-hidden="true"></span> RANGE SCAN</p>
+        </header>
+
+        <div class="terminal-card__body">
+          <form id="password-form" class="password-form">
+            <label class="password-form__label" for="password">Password</label>
+            <div class="password-form__field">
+              <span class="password-form__prompt" aria-hidden="true">&gt;_</span>
+              <input class="password-form__input" id="password" name="password" type="password" required autocomplete="off">
+            </div>
+            <button class="password-form__submit" type="submit">
+              <span>Run breach check</span>
+              <span aria-hidden="true">[ ENTER ]</span>
+            </button>
+          </form>
+
+          <section class="result-panel" aria-labelledby="result-heading">
+            <div class="result-panel__header">
+              <h2 id="result-heading">Output</h2>
+              <span class="result-panel__indicator" aria-hidden="true"></span>
+            </div>
+            <p id="result" class="result" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+      </section>
     </main>
   </body>
 </html>

@@ -1,3 +1,21 @@
+/* Palette and baseline reset */
+:root {
+  color-scheme: dark;
+  --surface-page: #050505;
+  --surface-card: #0f0f11;
+  --surface-raised: #1a1a20;
+  --border-subtle: #27272a;
+  --border-strong: #3f3f46;
+  --accent-cyan: #00f0ff;
+  --accent-green: #00ff66;
+  --accent-crimson: #ff0055;
+  --text-primary: #f4f4f5;
+  --text-muted: #a1a1aa;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
 *,
 *::before,
 *::after {
@@ -5,10 +23,262 @@
 }
 
 body {
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  min-height: 100svh;
+  justify-content: center;
+  align-items: center;
   margin: 0;
+  padding: 24px;
+  color: var(--text-primary);
+  background-color: var(--surface-page);
+  background-image:
+    linear-gradient(rgb(39 39 42 / 24%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(39 39 42 / 24%) 1px, transparent 1px);
+  background-size: 36px 36px;
 }
 
 button,
 input {
   font: inherit;
+}
+
+/* Centered terminal layout */
+.app-shell {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.terminal-card {
+  width: min(100%, 560px);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 55%), 0 0 32px rgb(0 240 255 / 5%);
+}
+
+.terminal-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+}
+
+.terminal-card__eyebrow,
+.terminal-card__status,
+.result-panel__header h2 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.terminal-card__eyebrow {
+  margin-bottom: 10px;
+  color: var(--accent-cyan);
+}
+
+.terminal-card h1 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.terminal-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 3px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.terminal-card__status span,
+.result-panel__indicator {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 10px rgb(0 255 102 / 60%);
+}
+
+.terminal-card__body {
+  display: grid;
+  gap: 32px;
+  padding: 28px;
+}
+
+/* Password form controls */
+.password-form {
+  display: grid;
+  gap: 12px;
+}
+
+.password-form__label {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.password-form__field {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-page);
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.password-form__field:focus-within {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 2px rgb(0 240 255 / 12%);
+}
+
+.password-form__prompt {
+  padding-left: 14px;
+  color: var(--accent-cyan);
+  font-size: 13px;
+}
+
+.password-form__input {
+  width: 100%;
+  min-width: 0;
+  padding: 15px 14px 15px 0;
+  border: 0;
+  outline: 0;
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.password-form__input::placeholder {
+  color: var(--text-muted);
+}
+
+.password-form__submit {
+  display: flex;
+  min-height: 48px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--accent-cyan);
+  color: var(--surface-page);
+  background: var(--accent-cyan);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.password-form__submit:hover {
+  background: #70f7ff;
+  box-shadow: 0 0 22px rgb(0 240 255 / 20%);
+}
+
+.password-form__submit:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+}
+
+.password-form__submit span:last-child {
+  font-size: 10px;
+}
+
+/* Output panel and status-state hooks */
+.result-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.result-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-panel__header h2 {
+  color: var(--text-muted);
+}
+
+.result-panel__indicator {
+  width: 6px;
+  height: 6px;
+  background: var(--border-strong);
+  box-shadow: none;
+}
+
+.result {
+  min-height: 60px;
+  margin: 0;
+  padding: 18px 16px;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--border-strong);
+  color: var(--text-muted);
+  background: var(--surface-page);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.result:empty,
+.result--idle {
+  border-left-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.result:empty::before {
+  content: "READY // AWAITING INPUT";
+}
+
+.result--verifying {
+  border-left-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.result--clean {
+  border-left-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.result--breached,
+.result--error {
+  border-left-color: var(--accent-crimson);
+  color: var(--accent-crimson);
+}
+
+/* Compact viewport spacing */
+@media (max-width: 480px) {
+  body {
+    padding: 16px;
+  }
+
+  .terminal-card__header,
+  .terminal-card__body {
+    padding: 20px;
+  }
+
+  .terminal-card__header {
+    gap: 12px;
+  }
+
+  .terminal-card__status {
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
