@@ -47,6 +47,26 @@
               <span class="result-panel__indicator" aria-hidden="true"></span>
             </div>
             <p id="result" class="result" role="status" aria-live="polite"></p>
+            <details id="query-inspector" class="query-inspector" hidden>
+              <summary class="query-inspector__summary">Anatomy of the Query</summary>
+              <div class="query-inspector__content">
+                <div class="query-inspector__hash" role="group" aria-label="SHA-1 hash split into prefix and suffix">
+                  <div class="query-inspector__segment query-inspector__segment--prefix">
+                    <span class="query-inspector__label">Prefix / 5</span>
+                    <code id="query-hash-prefix"></code>
+                  </div>
+                  <div class="query-inspector__segment query-inspector__segment--suffix">
+                    <span class="query-inspector__label">Suffix / 35</span>
+                    <code id="query-hash-suffix"></code>
+                  </div>
+                </div>
+                <div class="query-inspector__pool">
+                  <span class="query-inspector__label">Crowd / Pool Size</span>
+                  <strong id="query-pool-size"></strong>
+                </div>
+                <p class="query-inspector__privacy" role="note">Plaintext credential and suffix never crossed the network.</p>
+              </div>
+            </details>
           </section>
         </div>
       </section>

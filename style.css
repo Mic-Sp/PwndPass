@@ -302,6 +302,116 @@ input {
   color: var(--accent-crimson);
 }
 
+/* Collapsible query-anatomy inspection panel */
+.query-inspector {
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+}
+
+.query-inspector[hidden] {
+  display: none;
+}
+
+.query-inspector__summary {
+  display: flex;
+  min-height: 48px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  color: var(--accent-cyan);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+}
+
+.query-inspector__summary::-webkit-details-marker {
+  display: none;
+}
+
+.query-inspector__summary::after {
+  content: "+";
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+.query-inspector[open] > .query-inspector__summary {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.query-inspector[open] > .query-inspector__summary::after {
+  content: "-";
+}
+
+.query-inspector__content {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.query-inspector__hash {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 5fr);
+  gap: 10px;
+}
+
+.query-inspector__segment {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-page);
+}
+
+.query-inspector__label {
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.query-inspector__segment code {
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.query-inspector__segment--prefix code {
+  color: var(--accent-cyan);
+}
+
+.query-inspector__segment--suffix code {
+  color: var(--accent-green);
+}
+
+.query-inspector__pool {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid var(--border-subtle);
+}
+
+.query-inspector__pool strong {
+  color: var(--accent-cyan);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.query-inspector__privacy {
+  margin: 0;
+  padding: 12px;
+  border-left: 2px solid var(--accent-green);
+  color: var(--accent-green);
+  background: rgb(0 255 102 / 5%);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
 /* Compact viewport spacing */
 @media (max-width: 480px) {
   body {
@@ -319,6 +429,10 @@ input {
 
   .terminal-card__status {
     font-size: 9px;
+  }
+
+  .query-inspector__hash {
+    grid-template-columns: 1fr;
   }
 }
 
