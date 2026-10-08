@@ -67,6 +67,27 @@
                 <p class="query-inspector__privacy" role="note">Plaintext credential and suffix never crossed the network.</p>
               </div>
             </details>
+            <section id="strength-panel" class="strength-panel" aria-labelledby="strength-heading" hidden>
+              <header class="strength-panel__header">
+                <h3 id="strength-heading">Algorithmic Strength &amp; Entropy</h3>
+                <span>OFFLINE MODEL</span>
+              </header>
+              <dl class="strength-panel__metrics">
+                <div>
+                  <dt>Keyspace entropy</dt>
+                  <dd id="strength-entropy"></dd>
+                </div>
+                <div>
+                  <dt>Active character pool (R)</dt>
+                  <dd id="strength-pool"></dd>
+                </div>
+                <div>
+                  <dt>Estimated crack time</dt>
+                  <dd id="strength-time"></dd>
+                </div>
+              </dl>
+              <p class="strength-panel__model">Estimate assumes 10<sup>11</sup> guesses per second against a fast offline hash.</p>
+            </section>
           </section>
         </div>
       </section>

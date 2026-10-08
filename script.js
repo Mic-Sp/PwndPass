@@ -6,10 +6,60 @@ const queryInspector = document.querySelector("#query-inspector");
 const queryHashPrefix = document.querySelector("#query-hash-prefix");
 const queryHashSuffix = document.querySelector("#query-hash-suffix");
 const queryPoolSize = document.querySelector("#query-pool-size");
+const strengthPanel = document.querySelector("#strength-panel");
+const strengthEntropy = document.querySelector("#strength-entropy");
+const strengthPool = document.querySelector("#strength-pool");
+const strengthTime = document.querySelector("#strength-time");
+const strengthWarning = document.createElement("p");
+strengthWarning.className = "strength-panel__warning";
+strengthWarning.textContent = "⚠️ Pattern Alert: Long alphabetical phrases have high keyspace entropy, but are vulnerable to dictionary wordlist and combinator attacks.";
+strengthWarning.setAttribute("role", "note");
+strengthWarning.hidden = true;
+strengthTime.parentElement.append(strengthWarning);
+
+// Detect the ASCII character classes represented in a password.
+function detectCharacterPool(password) {
+  let poolSize = 0;
+  if (/[a-z]/.test(password)) poolSize += 26;
+  if (/[A-Z]/.test(password)) poolSize += 26;
+  if (/[0-9]/.test(password)) poolSize += 10;
+  if (/[^a-zA-Z0-9]/.test(password)) poolSize += 33;
+  return poolSize;
+}
+
+// Calculate keyspace entropy using password length and active pool size.
+function calculateEntropy(passwordLength, poolSize) {
+  return passwordLength * Math.log2(poolSize);
+}
+
+// Format crack time from log-space so large keyspaces do not overflow.
+function formatCrackTime(passwordLength, poolSize) {
+  const log2Seconds = passwordLength * Math.log2(poolSize) - Math.log2(1e11);
+  if (log2Seconds < 0) return "Instant (< 1 sec)";
+
+  const units = [
+    { label: "seconds", seconds: 1, limit: 60 },
+    { label: "minutes", seconds: 60, limit: 60 },
+    { label: "hours", seconds: 3600, limit: 24 },
+    { label: "days", seconds: 86400, limit: 365 },
+    { label: "years", seconds: 31536000, limit: 100 },
+  ];
+
+  for (const unit of units) {
+    const log2Count = log2Seconds - Math.log2(unit.seconds);
+    if (log2Count < Math.log2(unit.limit)) {
+      const count = Number((2 ** log2Count).toPrecision(2));
+      return `${count} ${unit.label}`;
+    }
+  }
+
+  return "Centuries";
+}
 
 passwordForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   queryInspector.hidden = true;
+  strengthPanel.hidden = true;
 
   // Stop empty or whitespace-only input before hashing.
   if (passwordInput.value.trim() === "") {
@@ -67,9 +117,29 @@ passwordForm.addEventListener("submit", async (event) => {
     queryHashSuffix.textContent = suffix;
     queryPoolSize.textContent = crowdPoolSize.toLocaleString();
     queryInspector.hidden = false;
+
+    const passwordLength = Array.from(passwordInput.value).length;
+    const characterPoolSize = detectCharacterPool(passwordInput.value);
+    const entropyBits = calculateEntropy(passwordLength, characterPoolSize);
+    const containsDigits = /[0-9]/.test(passwordInput.value);
+    const containsSymbols = /[^a-zA-Z0-9]/.test(passwordInput.value);
+
+    // Render strength metrics only after the API query succeeds.
+    strengthEntropy.textContent = `${entropyBits.toFixed(1)} bits`;
+    strengthPool.textContent = characterPoolSize.toLocaleString();
+    strengthTime.textContent = formatCrackTime(passwordLength, characterPoolSize);
+    // Show the dictionary/combinator warning for long, letters-only inputs.
+    strengthWarning.hidden = !(
+      passwordLength >= 12 &&
+      characterPoolSize <= 52 &&
+      !containsDigits &&
+      !containsSymbols
+    );
+    strengthPanel.hidden = false;
   } catch {
     // Keep request and hashing failures distinct from a clean lookup result.
     queryInspector.hidden = true;
+    strengthPanel.hidden = true;
     resultElement.textContent = "Unable to verify password. Please try again.";
   }
 });
