@@ -1,6 +1,7 @@
 const passwordForm = document.querySelector("#password-form");
 const passwordInput = document.querySelector("#password");
 const resultElement = document.querySelector("#result");
+const passwordToggle = document.querySelector("#password-toggle");
 
 passwordForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -57,4 +58,16 @@ passwordForm.addEventListener("submit", async (event) => {
     // Keep request and hashing failures distinct from a clean lookup result.
     resultElement.textContent = "Unable to verify password. Please try again.";
   }
+});
+
+// Swap the input type and matching icon/label to reflect password visibility.
+passwordToggle.addEventListener("click", () => {
+  const isPasswordVisible = passwordInput.type === "text";
+  passwordInput.type = isPasswordVisible ? "password" : "text";
+
+  const toggleLabel = isPasswordVisible ? "Show password" : "Hide password";
+  passwordToggle.setAttribute("aria-label", toggleLabel);
+  passwordToggle.setAttribute("title", toggleLabel);
+  passwordToggle.setAttribute("aria-pressed", String(!isPasswordVisible));
+  passwordToggle.classList.toggle("is-visible", !isPasswordVisible);
 });
